@@ -1,0 +1,13 @@
+project_id = "torneo-bocce-cogoleto-2k26"
+
+[api]
+enabled = true
+schemas = ["public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+major_version = 17
+
+[realtime]
+enabled = true
