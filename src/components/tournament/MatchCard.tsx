@@ -23,10 +23,12 @@ export function MatchCard({ match, teams }: { match: Match; teams: Team[] }) {
         <TeamName team={teamTwo} />
         <strong className="match-score">{match.score_two ?? "–"}</strong>
       </div>
-      <footer className="match-card__footer">
-        <span><CalendarClock size={15} aria-hidden="true" /> {formatDate(match.scheduled_at)} · {formatTime(match.scheduled_at)}</span>
-        <span><MapPin size={15} aria-hidden="true" /> {match.court || "Campo da definire"}</span>
-      </footer>
+      {(match.scheduled_at || match.court) && (
+        <footer className="match-card__footer">
+          {match.scheduled_at && <span><CalendarClock size={15} aria-hidden="true" /> {formatDate(match.scheduled_at)} · {formatTime(match.scheduled_at)}</span>}
+          {match.court && <span><MapPin size={15} aria-hidden="true" /> {match.court}</span>}
+        </footer>
+      )}
       {match.note && <p className="match-note">{match.note}</p>}
     </article>
   );
