@@ -32,8 +32,7 @@ async function failedAttemptCount(ipHash: string): Promise<number> {
       .eq("ip_hash", ipHash)
       .eq("success", false)
       .gte("attempted_at", cutoff);
-    if (error) throw new Error("Accesso temporaneamente non disponibile.");
-    return count ?? 0;
+    if (!error) return count ?? 0;
   }
   const recent = (localFailedAttempts.get(ipHash) ?? []).filter((time) => time > Date.now() - WINDOW_MS);
   localFailedAttempts.set(ipHash, recent);
