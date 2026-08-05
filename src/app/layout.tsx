@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/shared/Header";
 import { Footer } from "@/components/shared/Footer";
 import { RealtimeRefresh } from "@/components/shared/RealtimeRefresh";
+import { PwaRegistration } from "@/components/shared/PwaRegistration";
 import { loadPublicTournamentData } from "@/lib/data";
 
 const displayFont = Bebas_Neue({ weight: "400", subsets: ["latin"], variable: "--font-display" });
@@ -48,6 +49,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   return (
     <html lang="it">
       <body className={`${displayFont.variable} ${bodyFont.variable}`}>
+        <PwaRegistration />
         <a className="skip-link" href="#contenuto">Vai al contenuto</a>
         <Header status={settings.tournament_status} />
         <main id="contenuto" className="site-main">{children}</main>

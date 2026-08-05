@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BellRing, BookOpen, CalendarDays, ListChecks, Medal, Radio, Trophy } from "lucide-react";
+import { BellRing, BookOpen, CalendarDays, Download, ListChecks, Medal, Radio, Trophy } from "lucide-react";
 import { PageHero } from "@/components/shared/PageHero";
 import { ShareButton } from "@/components/shared/ShareButton";
 import { MatchCard } from "@/components/tournament/MatchCard";
@@ -33,6 +33,7 @@ export default async function HomePage() {
           <Link className="button button--primary" href="/gironi"><ListChecks size={19} aria-hidden="true" /> Vedi i gironi</Link>
           <Link className="button button--outline" href="/partite?stato=live"><Radio size={19} aria-hidden="true" /> PARTITA IN CORSO</Link>
           <Link className="button button--outline" href="/ranking"><Medal size={19} aria-hidden="true" /> Ranking</Link>
+          <Link className="button button--outline" href="/installa"><Download size={19} aria-hidden="true" /> Installa l&apos;app</Link>
           <ShareButton />
         </div>
         {!data.connected && (

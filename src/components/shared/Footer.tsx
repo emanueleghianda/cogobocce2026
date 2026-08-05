@@ -8,6 +8,7 @@ export function Footer() {
         <p>Risultati e classifiche ufficiali dell’organizzazione.</p>
       </div>
       <div className="footer-links">
+        <Link href="/installa">Installa l&apos;app</Link>
         <Link href="/regole">Regolamento</Link>
         <Link href="/admin">Area amministratore</Link>
       </div>

@@ -4,8 +4,10 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Torneo Bocce Cogoleto 2K26",
     short_name: "Bocce 2K26",
-    description: "Risultati, classifiche e fase finale del torneo di Cogoleto.",
+    description: "Tutte le partite, tutti i risultati e il ranking del torneo di Cogoleto.",
+    id: "/",
     start_url: "/",
+    scope: "/",
     display: "standalone",
     background_color: "#FFF8E8",
     theme_color: "#071B45",

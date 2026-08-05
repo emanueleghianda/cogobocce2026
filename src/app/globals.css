@@ -189,6 +189,17 @@ table { border-collapse: collapse; width: 100%; }
 
 .rules-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
 .rules-list { padding-left: 1.2rem; line-height: 1.75; }
+.install-page { display: grid; gap: 1.5rem; }
+.install-card { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.2rem; align-items: start; padding: clamp(1.2rem, 4vw, 2rem); background: white; border: 3px solid var(--gold); border-radius: 1.2rem; box-shadow: var(--shadow); }
+.install-card__icon { width: 72px; height: 72px; display: grid; place-items: center; border-radius: 1rem; background: var(--navy); color: var(--gold); }
+.install-card h2, .install-guides h2 { margin: 0; color: var(--navy); font-family: var(--font-display), sans-serif; font-size: clamp(2rem, 5vw, 3rem); line-height: 1; }
+.install-card p:not(.eyebrow), .install-guides p { line-height: 1.6; }
+.install-card__message { margin: .8rem 0 0; color: var(--green); font-weight: 850; }
+.install-guides { align-items: start; }
+.install-steps { display: grid; gap: .8rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+.install-steps li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: .7rem; align-items: center; line-height: 1.5; }
+.install-steps svg, .install-step-number { color: var(--blue); }
+.install-step-number { width: 24px; height: 24px; display: grid; place-items: center; border: 2px solid currentColor; border-radius: 50%; font-weight: 900; }
 .crossing-list { counter-reset: crossing; list-style: none; padding: 0; }
 .crossing-list li { counter-increment: crossing; display: flex; align-items: center; gap: .8rem; padding: .8rem 0; border-bottom: 1px solid var(--line); font-weight: 800; overflow-wrap: anywhere; }
 .crossing-list li::before { content: counter(crossing); flex: 0 0 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; background: var(--gold); color: var(--navy); }
@@ -264,6 +275,7 @@ table { border-collapse: collapse; width: 100%; }
   .site-footer { flex-direction: column; margin-bottom: 5rem; }
   .footer-links { flex-wrap: wrap; }
   .form-grid { grid-template-columns: 1fr; }
+  .install-card { grid-template-columns: 1fr; }
   .admin-shell { width: calc(100% - .75rem); margin-top: .5rem; }
   .admin-hero { align-items: flex-start; flex-direction: column; }
 }
