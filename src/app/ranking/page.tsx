@@ -15,7 +15,7 @@ export default async function RankingPage() {
     <>
       <PageHero eyebrow="Albo storico" title="RANKING UFFICIALE BOCCE ANNI '20" description="Classifica ufficiale precedente al Torneo di Bocce Doppio Cogoleto 2K26" logo />
       <section className="section container">
-        <div className="announcement">
+        <div className="announcement announcement--ranking">
           <Medal size={23} aria-hidden="true" />
           <div className="announcement__copy">
             <p>Il ranking riporta i risultati ufficiali maturati nei tornei a partire dall&apos;estate 2020.</p>
@@ -24,7 +24,7 @@ export default async function RankingPage() {
         </div>
       </section>
       <section className="section--tight container">
-        <div className="table-scroll" tabIndex={0} aria-label="Ranking ufficiale bocce anni '20">
+        <div className="table-scroll table-scroll--ranking" tabIndex={0} aria-label="Ranking ufficiale bocce anni '20">
           <table className="ranking-table">
             <thead><tr><th>Posizione</th><th>Partecipante</th><th>Punti</th></tr></thead>
             <tbody>{historicalRanking.map((entry) => {

@@ -3,7 +3,7 @@ import type { MatchStage, MatchStatus } from "@/types/tournament";
 export type ScoreValidation = { valid: true } | { valid: false; message: string };
 
 export function targetScoreForStage(stage: MatchStage): 10 | 12 {
-  return stage === "group" ? 10 : 12;
+  return stage === "third_place_final" || stage === "championship_final" ? 12 : 10;
 }
 
 export function validateMatchScore(
@@ -13,7 +13,13 @@ export function validateMatchScore(
   scoreTwo: number | null,
 ): ScoreValidation {
   const target = targetScoreForStage(stage);
-  const phaseLabel = stage === "group" ? "Una partita dei gironi" : "Una partita della fase finale";
+  const phaseLabel = stage === "group"
+    ? "Una partita dei gironi"
+    : stage === "quarterfinal"
+      ? "Un quarto di finale"
+      : stage === "semifinal"
+        ? "Una semifinale"
+        : "Una finale";
 
   for (const score of [scoreOne, scoreTwo]) {
     if (score !== null && (!Number.isInteger(score) || score < 0)) {
