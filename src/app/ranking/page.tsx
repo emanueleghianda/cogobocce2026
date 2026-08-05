@@ -15,7 +15,13 @@ export default async function RankingPage() {
     <>
       <PageHero eyebrow="Albo storico" title="RANKING UFFICIALE BOCCE ANNI '20" description="Classifica ufficiale precedente al Torneo di Bocce Doppio Cogoleto 2K26" logo />
       <section className="section container">
-        <div className="announcement"><Medal size={23} aria-hidden="true" /><p>Il ranking riporta i risultati ufficiali maturati negli anni &apos;20.</p></div>
+        <div className="announcement">
+          <Medal size={23} aria-hidden="true" />
+          <div className="announcement__copy">
+            <p>Il ranking riporta i risultati ufficiali maturati nei tornei a partire dall&apos;estate 2020.</p>
+            <p>Dopo ogni torneo (doppio o singolo) i punti vengono così distribuiti: 10 punti al primo, 6 punti al secondo, 4 punti al terzo, 2 punti al quarto.</p>
+          </div>
+        </div>
       </section>
       <section className="section--tight container">
         <div className="table-scroll" tabIndex={0} aria-label="Ranking ufficiale bocce anni '20">
