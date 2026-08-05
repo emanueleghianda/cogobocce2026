@@ -23,7 +23,7 @@ export default async function FinalsPage() {
       <section className="section container">
         {data.matches.some((match) => match.stage !== "group") ? (
           <div className="bracket">{rounds.map((round) => <section className="bracket-round" key={round.stage}><h2>{round.title}</h2>{data.matches.filter((match) => match.stage === round.stage).map((match) => <MatchCard key={match.id} match={match} teams={data.teams} />)}</section>)}</div>
-        ) : <div className="empty-state">La fase finale sarà generata quando tutti i 24 incontri dei gironi saranno conclusi e le classifiche definitive.</div>}
+        ) : <div className="empty-state">La fase finale sarà generata quando tutti gli incontri dei gironi saranno conclusi e le classifiche definitive.</div>}
       </section>
       <section className="section container">
         <div className="section-heading"><div><p className="eyebrow">Podio del torneo</p><h2>Classifica finale</h2></div></div>

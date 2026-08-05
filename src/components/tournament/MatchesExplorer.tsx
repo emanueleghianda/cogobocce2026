@@ -6,8 +6,8 @@ import type { Match, Team } from "@/types/tournament";
 
 const filters = [
   ["all", "Tutte"], ["scheduled", "Programmate"], ["live", "In corso"], ["completed", "Concluse"],
-  ["postponed", "Rinviate"], ["cancelled", "Annullate"], ["A", "Girone A"], ["B", "Girone B"],
-  ["C", "Girone C"], ["D", "Girone D"], ["quarterfinal", "Quarti"], ["semifinal", "Semifinali"],
+  ["A", "Girone A"], ["B", "Girone B"], ["C", "Girone C"], ["D", "Girone D"],
+  ["quarterfinal", "Quarti"], ["semifinal", "Semifinali"],
   ["third_place_final", "Finale 3°/4°"], ["championship_final", "Finale 1°/2°"],
 ] as const;
 
@@ -16,7 +16,7 @@ export function MatchesExplorer({ matches, teams, initial = "all" }: { matches: 
   const visible = useMemo(() => matches.filter((match) => {
     if (filter === "all") return true;
     if (["A","B","C","D"].includes(filter)) return match.group_code === filter;
-    if (["scheduled","live","completed","postponed","cancelled"].includes(filter)) return match.status === filter;
+    if (["scheduled","live","completed"].includes(filter)) return match.status === filter;
     return match.stage === filter;
   }), [filter, matches]);
   return (

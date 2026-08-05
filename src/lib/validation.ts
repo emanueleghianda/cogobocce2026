@@ -13,6 +13,11 @@ export const teamUpdateSchema = z.object({
   display_order: z.number().int().positive(),
 });
 
+export const teamDeleteSchema = z.object({
+  id: z.uuid(),
+  confirmed: z.literal(true),
+});
+
 export const matchUpdateSchema = z.object({
   id: z.uuid(),
   score_one: z.number().int().min(0).nullable(),

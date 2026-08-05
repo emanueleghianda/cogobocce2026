@@ -9,7 +9,7 @@ const navItems = [
   { href: "/gironi", label: "Gironi", icon: ListChecks },
   { href: "/partite", label: "Partite", icon: CalendarDays },
   { href: "/fase-finale", label: "Fase finale", icon: Trophy },
-  { href: "/ranking", label: "Ranking storico", icon: Medal },
+  { href: "/ranking", label: "Ranking", icon: Medal },
   { href: "/regole", label: "Regole", icon: ScrollText },
 ] as const;
 
@@ -41,7 +41,7 @@ export function Header({ status }: { status: TournamentStatus }) {
           return (
             <Link href={item.href} key={item.href}>
               <Icon size={20} aria-hidden="true" />
-              <span>{item.label === "Ranking storico" ? "Ranking" : item.label}</span>
+              <span>{item.label}</span>
             </Link>
           );
         })}

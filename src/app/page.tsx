@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { BellRing, CalendarDays, ListChecks, Medal, Radio, Trophy } from "lucide-react";
+import { BellRing, BookOpen, CalendarDays, ListChecks, Medal, Radio, Trophy } from "lucide-react";
 import { PageHero } from "@/components/shared/PageHero";
 import { ShareButton } from "@/components/shared/ShareButton";
 import { MatchCard } from "@/components/tournament/MatchCard";
 import { TOURNAMENT_STATUS_LABELS } from "@/lib/constants";
 import { loadPublicTournamentData } from "@/lib/data";
-import { calculateAllStandings } from "@/lib/tournament/groups";
+import { calculateAllStandings, getExpectedGroupMatchCount } from "@/lib/tournament/groups";
 
 export const dynamic = "force-dynamic";
 
@@ -19,19 +19,20 @@ export default async function HomePage() {
     .sort((a, b) => (a.scheduled_at ?? "9999").localeCompare(b.scheduled_at ?? "9999"))
     .slice(0, 3);
   const qualified = standings.flatMap((group) => group.rows.filter((row) => row.qualified));
+  const expectedMatches = getExpectedGroupMatchCount(data.teams) + 8;
 
   return (
     <>
       <PageHero
         eyebrow="Cogoleto · Estate 2026"
-        title="Torneo di Bocce Doppio – Cogoleto 2K26"
-        description="Risultati, classifiche e fase finale in tempo reale"
+        title="Torneo di Bocce Doppio Cogoleto 2K26"
+        description="Tutte le partite e tutti i risultati in tempo reale"
         logo
       >
         <div className="hero-actions">
           <Link className="button button--primary" href="/gironi"><ListChecks size={19} aria-hidden="true" /> Vedi i gironi</Link>
-          <Link className="button button--outline" href="/partite?stato=live"><Radio size={19} aria-hidden="true" /> Partite in corso</Link>
-          <Link className="button button--outline" href="/ranking"><Medal size={19} aria-hidden="true" /> Ranking storico</Link>
+          <Link className="button button--outline" href="/partite?stato=live"><Radio size={19} aria-hidden="true" /> PARTITA IN CORSO</Link>
+          <Link className="button button--outline" href="/ranking"><Medal size={19} aria-hidden="true" /> Ranking</Link>
           <ShareButton />
         </div>
         {!data.connected && (
@@ -40,11 +41,9 @@ export default async function HomePage() {
       </PageHero>
 
       <section className="section container">
-        <div className="grid grid--4">
+        <div className="grid grid--2">
           <div className="metric"><strong>{TOURNAMENT_STATUS_LABELS[data.settings.tournament_status]}</strong><span>Stato del torneo</span></div>
-          <div className="metric"><strong>{data.matches.filter((m) => m.status === "completed").length}/32</strong><span>Partite concluse</span></div>
-          <div className="metric"><strong>{live.length}</strong><span>Partite in corso</span></div>
-          <div className="metric"><strong>{qualified.length}/8</strong><span>Coppie qualificate</span></div>
+          <div className="metric"><strong>{data.matches.filter((m) => m.status === "completed").length}/{expectedMatches}</strong><span>Partite concluse</span></div>
         </div>
       </section>
 
@@ -56,7 +55,7 @@ export default async function HomePage() {
       </section>
 
       <section className="section container">
-        <div className="section-heading"><div><p className="eyebrow">Sul campo</p><h2>Partite in corso</h2></div><Link className="button button--outline" href="/partite">Tutte le partite</Link></div>
+        <div className="section-heading"><div><p className="eyebrow">Sul campo</p><h2>PARTITA IN CORSO</h2></div><Link className="button button--outline" href="/partite">Tutte le partite</Link></div>
         {live.length ? <div className="match-grid">{live.map((match) => <MatchCard key={match.id} match={match} teams={data.teams} />)}</div> : <div className="empty-state">Nessuna partita è in corso in questo momento.</div>}
       </section>
 
@@ -82,17 +81,22 @@ export default async function HomePage() {
 
       <section className="section container">
         <div className="grid grid--2">
-          <div className="panel panel--navy">
-            <p className="eyebrow">Albo storico 2020–2025</p><h2>Il podio del ranking</h2>
+          <div className="panel panel--navy podium-panel">
+            <p className="eyebrow">RANKING ANNI &apos;20</p><h2>Il podio del ranking</h2>
             <div className="podium-cards">
               {data.historicalRanking.slice(0, 3).map((entry, index) => <div className="podium-card" key={entry.id}><span>{["🥇", "🥈", "🥉"][index]} {entry.rank_position}° posto</span><strong>{entry.participant_name}</strong><b>{entry.points} pt</b></div>)}
             </div>
             <Link className="button button--primary" href="/ranking">Consulta il ranking completo</Link>
           </div>
           <div className="panel panel--cream">
-            <p className="eyebrow">Formato ufficiale</p><h2>32 partite, un solo titolo</h2>
-            <p>16 coppie divise in quattro gironi. Le migliori otto accedono ai quarti, poi semifinali e due finali.</p>
-            <div className="button-row"><Link className="button button--navy" href="/fase-finale"><Trophy size={18} aria-hidden="true" /> Fase finale</Link><Link className="button button--outline" href="/regole"><CalendarDays size={18} aria-hidden="true" /> Leggi le regole</Link></div>
+            <p className="eyebrow">SCOPRI IL TORNEO</p><h2>Il torneo, partita dopo partita</h2>
+            <p>Consulta il regolamento, il calendario, i gironi e il tabellone della fase finale.</p>
+            <div className="button-row">
+              <Link className="button button--outline" href="/regole"><BookOpen size={18} aria-hidden="true" /> Leggi le regole</Link>
+              <Link className="button button--outline" href="/partite"><CalendarDays size={18} aria-hidden="true" /> Partite</Link>
+              <Link className="button button--outline" href="/gironi"><ListChecks size={18} aria-hidden="true" /> Gironi</Link>
+              <Link className="button button--navy" href="/fase-finale"><Trophy size={18} aria-hidden="true" /> Fase finale</Link>
+            </div>
           </div>
         </div>
       </section>

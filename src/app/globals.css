@@ -163,8 +163,9 @@ table { border-collapse: collapse; width: 100%; }
 .champion-banner { padding: 1.5rem; text-align: center; border: 4px solid var(--gold); background: var(--navy); color: white; border-radius: 1.2rem; }
 .champion-banner h2 { color: var(--gold); font-family: var(--font-display), sans-serif; font-size: 3rem; margin: .4rem 0; }
 
-.ranking-table { min-width: 600px; background: white; }
+.ranking-table { min-width: 520px; background: white; }
 .ranking-table th, .ranking-table td { padding: .9rem 1rem; border-bottom: 1px solid var(--line); text-align: left; }
+.ranking-table th:first-child, .ranking-table td:first-child { width: 145px; white-space: nowrap; }
 .ranking-table thead th { background: var(--navy); color: white; }
 .ranking-table td:last-child, .ranking-table th:last-child { text-align: right; font-weight: 900; }
 .ranking-table tbody th { overflow-wrap: anywhere; }
@@ -172,11 +173,12 @@ table { border-collapse: collapse; width: 100%; }
 .ranking-table tr.podium-2 { background: #eef1f4; }
 .ranking-table tr.podium-3 { background: #f8e4d4; }
 .medal { display: inline-flex; gap: .4rem; align-items: center; font-weight: 900; }
-.podium-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; }
+.podium-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; margin-top: 1.35rem; }
 .podium-card { border-radius: 1rem; text-align: center; padding: 1rem; background: white; border: 2px solid var(--line); }
 .podium-card:first-child { border-color: var(--gold); background: #fff8dc; }
-.podium-card strong, .podium-card span { display: block; overflow-wrap: anywhere; }
+.podium-card strong, .podium-card span { display: block; overflow-wrap: anywhere; color: #000; }
 .podium-card b { font-family: var(--font-display), sans-serif; color: var(--navy); font-size: 2rem; }
+.podium-panel .podium-cards + .button { margin-top: 1.35rem; }
 
 .rules-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
 .rules-list { padding-left: 1.2rem; line-height: 1.75; }

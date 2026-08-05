@@ -15,7 +15,7 @@ const publicBaseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
 export const metadata: Metadata = {
   metadataBase: new URL(publicBaseUrl),
   title: { default: "Torneo di Bocce Doppio Cogoleto 2K26", template: "%s · Bocce Cogoleto 2K26" },
-  description: "Risultati, classifiche, ranking storico e fase finale del Torneo di Bocce Doppio Cogoleto 2K26.",
+  description: "Tutte le partite, tutti i risultati, il ranking e la fase finale del Torneo di Bocce Doppio Cogoleto 2K26.",
   applicationName: "Torneo Bocce Cogoleto 2K26",
   manifest: "/manifest.webmanifest",
   icons: {
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "it_IT",
     title: "Torneo di Bocce Doppio Cogoleto 2K26",
-    description: "Risultati, classifiche, ranking storico e fase finale in tempo reale.",
+    description: "Tutte le partite e tutti i risultati in tempo reale.",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "Logo e informazioni del Torneo di Bocce Doppio Cogoleto 2K26" }],
   },
   twitter: { card: "summary_large_image", title: "Torneo di Bocce Doppio Cogoleto 2K26", description: "Risultati e classifiche in tempo reale.", images: ["/og.png"] },

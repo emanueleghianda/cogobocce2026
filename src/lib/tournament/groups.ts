@@ -17,18 +17,38 @@ const roundRobinPairs = [
   [[0, 1], [2, 3]],
 ] as const;
 
+const threeTeamPairs = [
+  [[0, 1]],
+  [[1, 2]],
+  [[0, 2]],
+] as const;
+
+export function expectedMatchesForTeamCount(teamCount: number): number {
+  return teamCount > 1 ? (teamCount * (teamCount - 1)) / 2 : 0;
+}
+
+export function getExpectedGroupMatchCount(teams: Team[]): number {
+  return GROUP_CODES.reduce(
+    (total, groupCode) => total + expectedMatchesForTeamCount(
+      teams.filter((team) => team.group_code === groupCode).length,
+    ),
+    0,
+  );
+}
+
 export function generateGroupMatches(teams: Team[]): NewMatch[] {
   const matches: NewMatch[] = [];
   for (const groupCode of GROUP_CODES) {
     const groupTeams = teams
       .filter((team) => team.group_code === groupCode)
       .sort((a, b) => a.display_order - b.display_order);
-    if (groupTeams.length !== 4) {
+    if (groupTeams.length !== 3 && groupTeams.length !== 4) {
       throw new Error(
-        `Il Girone ${groupCode} contiene ${groupTeams.length} coppie. Ogni girone deve contenere esattamente 4 coppie.`,
+        `Il Girone ${groupCode} contiene ${groupTeams.length} coppie. Ogni girone deve contenerne 3 oppure 4.`,
       );
     }
-    roundRobinPairs.forEach((pairs, dayIndex) => {
+    const pairings = groupTeams.length === 4 ? roundRobinPairs : threeTeamPairs;
+    pairings.forEach((pairs, dayIndex) => {
       pairs.forEach(([one, two]) => {
         matches.push({
           stage: "group",
@@ -168,7 +188,8 @@ export function calculateGroupStandings(
     cursor = end;
   }
 
-  const isComplete = groupMatches.length === 6 && completed.length === 6;
+  const expectedMatches = expectedMatchesForTeamCount(groupTeams.length);
+  const isComplete = expectedMatches > 0 && groupMatches.length === expectedMatches && completed.length === expectedMatches;
   const isProvisional = provisionalTeams.size > 0;
   return {
     groupCode,

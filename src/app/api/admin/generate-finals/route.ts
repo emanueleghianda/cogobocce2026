@@ -28,9 +28,6 @@ export async function POST(request: NextRequest) {
     const teams = (teamsResult.data ?? []) as Team[];
     const matches = (matchesResult.data ?? []) as Match[];
     const groupMatches = matches.filter((match) => match.stage === "group");
-    if (groupMatches.length !== 24 || groupMatches.some((match) => match.status !== "completed")) {
-      throw new Error("La fase finale richiede tutti i 24 incontri dei gironi conclusi.");
-    }
     if (matches.some((match) => match.stage !== "group")) {
       throw new Error("La fase finale è già stata generata.");
     }
@@ -39,6 +36,9 @@ export async function POST(request: NextRequest) {
       matches,
       (overridesResult.data ?? []) as RankingOverride[],
     );
+    if (groupMatches.some((match) => match.status !== "completed") || standings.some((group) => !group.isComplete)) {
+      throw new Error("La fase finale richiede tutti gli incontri dei gironi conclusi.");
+    }
     if (standings.some((group) => group.unresolvedTie.length > 0 || group.isProvisional)) {
       throw new Error("Sono presenti parità o classifiche provvisorie da risolvere.");
     }
