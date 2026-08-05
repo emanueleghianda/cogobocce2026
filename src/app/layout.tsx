@@ -31,9 +31,9 @@ export const metadata: Metadata = {
     locale: "it_IT",
     title: "Torneo di Bocce Doppio Cogoleto 2K26",
     description: "Tutte le partite e tutti i risultati in tempo reale.",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Logo e informazioni del Torneo di Bocce Doppio Cogoleto 2K26" }],
+    images: [{ url: "/og-partite-risultati-ranking.png", width: 1200, height: 630, alt: "Tutte le partite, tutti i risultati e tutti i ranking del Torneo di Bocce Doppio Cogoleto 2K26" }],
   },
-  twitter: { card: "summary_large_image", title: "Torneo di Bocce Doppio Cogoleto 2K26", description: "Risultati e classifiche in tempo reale.", images: ["/og.png"] },
+  twitter: { card: "summary_large_image", title: "Torneo di Bocce Doppio Cogoleto 2K26", description: "Risultati e classifiche in tempo reale.", images: ["/og-partite-risultati-ranking.png"] },
 };
 
 export const viewport: Viewport = {
