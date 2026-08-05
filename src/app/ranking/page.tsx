@@ -24,7 +24,7 @@ export default async function RankingPage() {
             <tbody>{historicalRanking.map((entry) => {
               const podium = entry.rank_position <= 3 ? `podium-${entry.rank_position}` : "";
               const medal = entry.rank_position === 1 ? "🥇" : entry.rank_position === 2 ? "🥈" : entry.rank_position === 3 ? "🥉" : null;
-              return <tr key={entry.id} className={podium}><td><span className="medal">{medal && <span aria-hidden="true">{medal}</span>}<span>{entry.rank_position}°{medal ? " posto" : ""}</span></span></td><th scope="row">{entry.participant_name}</th><td>{entry.points} pt</td></tr>;
+              return <tr key={entry.id} className={podium}><td aria-label={`${entry.rank_position}° posizione`}><span className="medal">{medal ? <span aria-hidden="true">{medal}</span> : <span>{entry.rank_position}°</span>}</span></td><th scope="row">{entry.participant_name}</th><td>{entry.points} pt</td></tr>;
             })}</tbody>
           </table>
         </div>
