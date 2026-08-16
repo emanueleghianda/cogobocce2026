@@ -24,7 +24,7 @@ export function RealtimeRefresh({ lastUpdate }: { lastUpdate: string | null }) {
       };
     }
     const channel = client.channel("torneo-pubblico");
-    for (const table of ["teams", "matches", "tournament_settings", "historical_ranking"]) {
+    for (const table of ["tournaments", "teams", "matches", "tournament_settings", "historical_ranking"]) {
       channel.on("postgres_changes", { event: "*", schema: "public", table }, refresh);
     }
     channel.subscribe((status) => setLive(status === "SUBSCRIBED"));

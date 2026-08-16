@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdminRequest } from "@/lib/admin";
+import { getActiveTournament } from "@/lib/active-tournament";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { determineFinalRanking } from "@/lib/tournament/bracket";
 import { calculateAllStandings } from "@/lib/tournament/groups";
@@ -14,12 +15,13 @@ export async function GET(request: NextRequest) {
   const unauthorized = await requireAdminRequest(request);
   if (unauthorized) return unauthorized;
   const client = createServerSupabaseClient();
+  const tournament = await getActiveTournament(client);
   const [teamsResult, matchesResult, rankingResult, overridesResult, settingsResult] = await Promise.all([
-    client.from("teams").select("*").order("display_order"),
-    client.from("matches").select("*").order("scheduled_at", { ascending: true, nullsFirst: false }),
+    client.from("teams").select("*").eq("tournament_id", tournament.id).order("display_order"),
+    client.from("matches").select("*").eq("tournament_id", tournament.id).order("scheduled_at", { ascending: true, nullsFirst: false }),
     client.from("historical_ranking").select("*").order("display_order"),
-    client.from("ranking_overrides").select("*"),
-    client.from("tournament_settings").select("*").eq("id", 1).single(),
+    client.from("ranking_overrides").select("*").eq("tournament_id", tournament.id),
+    client.from("tournament_settings").select("*").eq("tournament_id", tournament.id).single(),
   ]);
   if (teamsResult.error || matchesResult.error || rankingResult.error || overridesResult.error || settingsResult.error) {
     return NextResponse.json({ error: "Esportazione non disponibile." }, { status: 500 });
@@ -30,8 +32,9 @@ export async function GET(request: NextRequest) {
   const overrides = (overridesResult.data ?? []) as RankingOverride[];
   const payload = {
     esportato_il: new Date().toISOString(),
+    torneo: tournament,
     impostazioni: settingsResult.data,
-    coppie: teams,
+    partecipanti: teams,
     partite: matches,
     classifiche: calculateAllStandings(teams, matches, overrides),
     classifica_finale: determineFinalRanking(matches, teams),
@@ -46,7 +49,7 @@ export async function GET(request: NextRequest) {
   const format = new URL(request.url).searchParams.get("format");
   if (format === "csv") {
     const rows = [
-      ["sezione", "periodo/fase", "posizione/girone", "nome/coppia1", "punti/punteggio1", "coppia2", "punteggio2", "stato", "ordine"],
+      ["sezione", "periodo/fase", "posizione/girone", "partecipante1", "punti/punteggio1", "partecipante2", "punteggio2", "stato", "ordine"],
       ...ranking.map((entry) => [
         "ranking_storico",
         entry.ranking_period,
@@ -58,7 +61,7 @@ export async function GET(request: NextRequest) {
         "",
         entry.display_order,
       ]),
-      ...teams.map((team) => ["coppia", "girone", team.group_code, team.name, team.player_one, team.player_two, "", "", team.display_order]),
+      ...teams.map((team) => ["partecipante", "girone", team.group_code, team.name, "", "", "", "", team.display_order]),
       ...matches.map((match) => [
         "partita",
         match.stage,
@@ -75,14 +78,14 @@ export async function GET(request: NextRequest) {
     return new NextResponse(`\uFEFF${csv}`, {
       headers: {
         "content-type": "text/csv; charset=utf-8",
-        "content-disposition": 'attachment; filename="torneo-bocce-cogoleto-2k26.csv"',
+        "content-disposition": 'attachment; filename="torneo-bocce-singolo-cogoleto-2k26.csv"',
       },
     });
   }
   return new NextResponse(JSON.stringify(payload, null, 2), {
     headers: {
       "content-type": "application/json; charset=utf-8",
-      "content-disposition": 'attachment; filename="torneo-bocce-cogoleto-2k26.json"',
+      "content-disposition": 'attachment; filename="torneo-bocce-singolo-cogoleto-2k26.json"',
     },
   });
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { apiError, auditAndTouch, requireAdminRequest } from "@/lib/admin";
+import { getActiveTournament } from "@/lib/active-tournament";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { generateFinalBracket } from "@/lib/tournament/bracket";
 import { calculateAllStandings } from "@/lib/tournament/groups";
@@ -17,10 +18,11 @@ export async function POST(request: NextRequest) {
       );
     }
     const client = createServerSupabaseClient();
+    const tournament = await getActiveTournament(client);
     const [teamsResult, matchesResult, overridesResult] = await Promise.all([
-      client.from("teams").select("*").order("display_order"),
-      client.from("matches").select("*"),
-      client.from("ranking_overrides").select("*"),
+      client.from("teams").select("*").eq("tournament_id", tournament.id).order("display_order"),
+      client.from("matches").select("*").eq("tournament_id", tournament.id),
+      client.from("ranking_overrides").select("*").eq("tournament_id", tournament.id),
     ]);
     if (teamsResult.error || matchesResult.error || overridesResult.error) {
       throw new Error("Impossibile verificare le classifiche.");
@@ -43,12 +45,14 @@ export async function POST(request: NextRequest) {
       throw new Error("Sono presenti parità o classifiche provvisorie da risolvere.");
     }
     const finalMatches = generateFinalBracket(standings);
-    const { error: insertError } = await client.from("matches").insert(finalMatches);
+    const { error: insertError } = await client.from("matches").insert(
+      finalMatches.map((match) => ({ ...match, tournament_id: tournament.id })),
+    );
     if (insertError) throw new Error("Non è stato possibile creare la fase finale.");
     await client
       .from("tournament_settings")
       .update({ finals_generated: true, tournament_status: "quarterfinals" })
-      .eq("id", 1);
+      .eq("tournament_id", tournament.id);
     await auditAndTouch("generazione_fase_finale", "matches", "Generate le 8 partite della fase finale");
     return NextResponse.json({ ok: true, count: finalMatches.length });
   } catch (error) {

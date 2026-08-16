@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Home, ListChecks, Trophy, CalendarDays, Medal, ScrollText, LockKeyhole } from "lucide-react";
+import { Archive, Home, ListChecks, Trophy, CalendarDays, Medal, ScrollText, LockKeyhole } from "lucide-react";
 import { Logo } from "@/components/shared/Logo";
 import { TOURNAMENT_STATUS_LABELS } from "@/lib/constants";
-import type { TournamentStatus } from "@/types/tournament";
+import type { Tournament, TournamentStatus } from "@/types/tournament";
 
 const navItems = [
   { href: "/", label: "Home", icon: Home },
@@ -11,15 +11,16 @@ const navItems = [
   { href: "/fase-finale", label: "Fase finale", icon: Trophy },
   { href: "/ranking", label: "Ranking", icon: Medal },
   { href: "/regole", label: "Regole", icon: ScrollText },
+  { href: "/archivio", label: "Archivio", icon: Archive },
 ] as const;
 
-export function Header({ status }: { status: TournamentStatus }) {
+export function Header({ status, tournament }: { status: TournamentStatus; tournament: Tournament }) {
   return (
     <>
       <header className="site-header">
         <div className="site-header__inner">
           <Link href="/" className="brand-link" aria-label="Torna alla home del torneo">
-            <Logo compact />
+            <Logo compact src={tournament.logo_path} alt={`Logo ${tournament.title}`} />
           </Link>
           <div className="status-ribbon">
             <span className="status-dot" aria-hidden="true" />

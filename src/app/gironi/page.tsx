@@ -14,7 +14,7 @@ export default async function GroupsPage() {
   const allStandings = calculateAllStandings(data.teams, data.matches, data.overrides);
   return (
     <>
-      <PageHero eyebrow="Fase a gironi" title="Gironi e classifiche" description="Quattro gironi. Le prime due coppie di ogni girone accedono ai quarti." />
+      <PageHero eyebrow="Fase a gironi" title="Gironi e classifiche" description="Quattro gironi. I primi due giocatori di ogni girone accedono ai quarti." />
       <section className="section container">
         {allStandings.map((standings) => {
           const teams = data.teams.filter((team) => team.group_code === standings.groupCode).sort((a,b) => a.display_order - b.display_order);
@@ -25,8 +25,8 @@ export default async function GroupsPage() {
             <article className="group-card" key={standings.groupCode}>
               <h2 className="group-card__title">Girone {standings.groupCode}</h2>
               <div className="group-card__body">
-                <div className="team-list">{teams.map((team) => <div className="team-tile" key={team.id}><TeamName team={team} showPlayers /></div>)}</div>
-                <StandingsTable standings={standings} />
+                <div className="team-list">{teams.map((team) => <div className="team-tile" key={team.id}><TeamName team={team} /></div>)}</div>
+                <StandingsTable standings={standings} format="single" />
                 <h3 className="round-title">Partite del girone</h3>
                 {matches.length ? <div className="grid grid--2">{matches.map((match) => <MatchCard key={match.id} match={match} teams={data.teams} />)}</div> : <div className="empty-state">Incontri non ancora generati.</div>}
               </div>

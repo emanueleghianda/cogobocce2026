@@ -35,7 +35,7 @@ export function ShareButton() {
 
   function shareData() {
     return {
-      title: "Torneo di Bocce Doppio Cogoleto 2K26",
+      title: "Torneo di Bocce Singolo Cogoleto 2K26",
       text: "Tutte le partite, tutti i risultati e tutti i ranking del torneo.",
       url: window.location.origin,
     };

@@ -4,7 +4,7 @@ import type { Match } from "@/types/tournament";
 import { calculateGroupStandings, generateGroupMatches, getExpectedGroupMatchCount } from "./groups";
 
 function completed(id: string, one: string, two: string, scoreOne: number, scoreTwo: number): Match {
-  return { id, stage: "group", group_code: "A", match_day: 1, bracket_slot: null, team_one_id: one, team_two_id: two, score_one: scoreOne, score_two: scoreTwo, status: "completed", scheduled_at: null, court: null, note: null };
+  return { id, tournament_id: INITIAL_TEAMS[0].tournament_id, stage: "group", group_code: "A", match_day: 1, bracket_slot: null, team_one_id: one, team_two_id: two, score_one: scoreOne, score_two: scoreTwo, status: "completed", scheduled_at: null, court: null, note: null };
 }
 
 describe("gironi", () => {
@@ -24,7 +24,7 @@ describe("gironi", () => {
     ]);
   });
 
-  it("genera correttamente gli incontri quando un girone contiene tre coppie", () => {
+  it("genera correttamente gli incontri quando un girone contiene tre partecipanti", () => {
     const fifteenTeams = INITIAL_TEAMS.slice(0, 15);
     const matches = generateGroupMatches(fifteenTeams);
 
@@ -36,7 +36,7 @@ describe("gironi", () => {
     );
   });
 
-  it("usa lo scontro diretto per due coppie con vittorie e differenza uguali", () => {
+  it("usa lo scontro diretto per due partecipanti con vittorie e differenza uguali", () => {
     const [a,b,c,d] = INITIAL_TEAMS.slice(0,4);
     const standings = calculateGroupStandings("A", [a,b,c,d], [
       completed("1", a.id, b.id, 10, 5),
@@ -46,7 +46,7 @@ describe("gironi", () => {
     expect(standings.rows.findIndex((row) => row.team.id === a.id)).toBeLessThan(standings.rows.findIndex((row) => row.team.id === b.id));
   });
 
-  it("segnala una parità tra tre coppie senza inventare altri criteri", () => {
+  it("segnala una parità tra tre partecipanti senza inventare altri criteri", () => {
     const [a,b,c,d] = INITIAL_TEAMS.slice(0,4);
     const standings = calculateGroupStandings("A", [a,b,c,d], [
       completed("1", a.id, b.id, 10, 0), completed("2", b.id, c.id, 10, 0), completed("3", c.id, a.id, 10, 0),

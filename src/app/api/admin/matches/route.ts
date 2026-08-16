@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { apiError, auditAndTouch, requireAdminRequest } from "@/lib/admin";
+import { getActiveTournament } from "@/lib/active-tournament";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { propagateBracketResults } from "@/lib/tournament/bracket";
 import { validateMatchScore } from "@/lib/tournament/score";
@@ -12,15 +13,17 @@ export async function PUT(request: NextRequest) {
   try {
     const input = matchUpdateSchema.parse(await request.json());
     const client = createServerSupabaseClient();
+    const tournament = await getActiveTournament(client);
     const { data: existing, error: existingError } = await client
       .from("matches")
       .select("*")
       .eq("id", input.id)
+      .eq("tournament_id", tournament.id)
       .single();
     if (existingError || !existing) throw new Error("Partita non trovata.");
     const current = existing as Match;
     if ((input.status === "live" || input.status === "completed") && (!current.team_one_id || !current.team_two_id)) {
-      throw new Error("La partita non può iniziare finché entrambe le coppie non sono definite.");
+      throw new Error("La partita non può iniziare finché entrambi i partecipanti non sono definiti.");
     }
     const scoreValidation = validateMatchScore(
       current.stage,
@@ -44,6 +47,7 @@ export async function PUT(request: NextRequest) {
       const { data: bracketRows, error: bracketError } = await client
         .from("matches")
         .select("*")
+        .eq("tournament_id", tournament.id)
         .neq("stage", "group");
       if (bracketError) throw new Error("Impossibile verificare il tabellone.");
       const bracket = (bracketRows ?? []) as Match[];
@@ -73,6 +77,7 @@ export async function PUT(request: NextRequest) {
       .from("matches")
       .update(update)
       .eq("id", current.id)
+      .eq("tournament_id", tournament.id)
       .select()
       .single();
     if (error) throw new Error("Non è stato possibile salvare il risultato.");
@@ -87,7 +92,8 @@ export async function PUT(request: NextRequest) {
           score_two: null,
           status: "scheduled",
         })
-        .eq("id", match.id);
+        .eq("id", match.id)
+        .eq("tournament_id", tournament.id);
       if (cascadeError) throw new Error("Il risultato è salvato, ma il tabellone richiede una verifica.");
     }
     await auditAndTouch(

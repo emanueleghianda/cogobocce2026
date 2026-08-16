@@ -19,7 +19,7 @@ export default async function FinalsPage() {
   const finalRanking = determineFinalRanking(data.matches, data.teams);
   return (
     <>
-      <PageHero eyebrow="Otto coppie, un titolo" title="Fase finale" description="Il tabellone ufficiale dai quarti alla finale per il titolo di Campioni Cogoleto 2K26." logo />
+      <PageHero eyebrow="Otto giocatori, un titolo" title="Fase finale" description="Il tabellone ufficiale dai quarti alla finale per il titolo di Campione Cogoleto 2K26." logo logoSrc={data.tournament.logo_path} logoAlt={`Logo ${data.tournament.title}`} />
       <section className="section container">
         {data.matches.some((match) => match.stage !== "group") ? (
           <div className="bracket">{rounds.map((round) => <section className="bracket-round" key={round.stage}><h2>{round.title}</h2>{data.matches.filter((match) => match.stage === round.stage).map((match) => <MatchCard key={match.id} match={match} teams={data.teams} />)}</section>)}</div>
@@ -27,7 +27,7 @@ export default async function FinalsPage() {
       </section>
       <section className="section container">
         <div className="section-heading"><div><p className="eyebrow">Podio del torneo</p><h2>Classifica finale</h2></div></div>
-        {finalRanking.length === 4 ? <><div className="champion-banner"><Crown size={42} color="#F5B800" aria-hidden="true" /><p>Campioni Cogoleto 2K26</p><h2>{finalRanking[0].name}</h2></div><div className="final-ranking">{finalRanking.map((team,index) => <div className="final-rank" key={team.id}><Trophy color={index === 0 ? "#F5B800" : "#071B45"} aria-hidden="true" /><span>{index + 1}° posto</span><strong>{team.name}</strong></div>)}</div></> : <div className="empty-state">La classifica conclusiva apparirà dopo entrambe le finali.</div>}
+        {finalRanking.length === 4 ? <><div className="champion-banner"><Crown size={42} color="#F5B800" aria-hidden="true" /><p>Campione Cogoleto 2K26</p><h2>{finalRanking[0].name}</h2></div><div className="final-ranking">{finalRanking.map((team,index) => <div className="final-rank" key={team.id}><Trophy color={index === 0 ? "#F5B800" : "#071B45"} aria-hidden="true" /><span>{index + 1}° posto</span><strong>{team.name}</strong></div>)}</div></> : <div className="empty-state">La classifica conclusiva apparirà dopo entrambe le finali.</div>}
       </section>
     </>
   );

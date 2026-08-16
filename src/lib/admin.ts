@@ -2,6 +2,7 @@ import "server-only";
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { ADMIN_COOKIE_NAME, verifyAdminToken } from "@/lib/auth";
+import { getActiveTournament } from "@/lib/active-tournament";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export async function requireAdminRequest(request: NextRequest): Promise<NextResponse | null> {
@@ -16,19 +17,21 @@ export async function auditAndTouch(
   entityId?: string,
 ) {
   const client = createServerSupabaseClient();
+  const tournament = await getActiveTournament(client);
   const now = new Date().toISOString();
   const [auditResult, settingsResult] = await Promise.all([
     client.from("admin_audit_log").insert({
       action,
       entity_type: entityType,
       entity_id: entityId ?? null,
+      tournament_id: tournament.id,
       summary,
       created_at: now,
     }),
     client
       .from("tournament_settings")
       .update({ last_public_update: now, updated_at: now })
-      .eq("id", 1),
+      .eq("tournament_id", tournament.id),
   ]);
   if (auditResult.error || settingsResult.error) {
     throw new Error("Aggiornamento registrato, ma non è stato possibile completare il registro attività.");

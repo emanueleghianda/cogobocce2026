@@ -9,7 +9,7 @@ import type {
 import { GROUP_CODES } from "@/types/tournament";
 import { getWinnerAndLoser } from "./score";
 
-export type NewMatch = Omit<Match, "id" | "created_at" | "updated_at">;
+export type NewMatch = Omit<Match, "id" | "tournament_id" | "created_at" | "updated_at">;
 
 const roundRobinPairs = [
   [[0, 3], [1, 2]],
@@ -44,7 +44,7 @@ export function generateGroupMatches(teams: Team[]): NewMatch[] {
       .sort((a, b) => a.display_order - b.display_order);
     if (groupTeams.length !== 3 && groupTeams.length !== 4) {
       throw new Error(
-        `Il Girone ${groupCode} contiene ${groupTeams.length} coppie. Ogni girone deve contenerne 3 oppure 4.`,
+        `Il Girone ${groupCode} contiene ${groupTeams.length} partecipanti. Ogni girone deve contenerne 3 oppure 4.`,
       );
     }
     const pairings = groupTeams.length === 4 ? roundRobinPairs : threeTeamPairs;

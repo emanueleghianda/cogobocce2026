@@ -15,26 +15,26 @@ const publicBaseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(publicBaseUrl),
-  title: { default: "Torneo di Bocce Doppio Cogoleto 2K26", template: "%s · Bocce Cogoleto 2K26" },
-  description: "Tutte le partite, tutti i risultati, il ranking e la fase finale del Torneo di Bocce Doppio Cogoleto 2K26.",
-  applicationName: "Torneo Bocce Cogoleto 2K26",
+  title: { default: "Torneo di Bocce Singolo Cogoleto 2K26", template: "%s · Bocce Singolo Cogoleto 2K26" },
+  description: "Tutte le partite, tutti i risultati, il ranking e la fase finale del Torneo di Bocce Singolo Cogoleto 2K26.",
+  applicationName: "Bocce Singolo Cogoleto 2K26",
   manifest: "/manifest.webmanifest",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
-      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
+      { url: "/icon-singolo-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/icon-singolo-512.png", type: "image/png", sizes: "512x512" },
     ],
-    apple: [{ url: "/apple-touch-icon.png", type: "image/png", sizes: "180x180" }],
+    apple: [{ url: "/apple-touch-icon-singolo.png", type: "image/png", sizes: "180x180" }],
   },
   openGraph: {
     type: "website",
     locale: "it_IT",
-    title: "Torneo di Bocce Doppio Cogoleto 2K26",
+    title: "Torneo di Bocce Singolo Cogoleto 2K26",
     description: "Tutte le partite e tutti i risultati in tempo reale.",
-    images: [{ url: "/og-partite-risultati-ranking.png", width: 1200, height: 630, alt: "Tutte le partite, tutti i risultati e tutti i ranking del Torneo di Bocce Doppio Cogoleto 2K26" }],
+    images: [{ url: "/og-singolo-2k26.png", width: 1200, height: 630, alt: "Tutte le partite, tutti i risultati e tutti i ranking del Torneo di Bocce Singolo Cogoleto 2K26" }],
   },
-  twitter: { card: "summary_large_image", title: "Torneo di Bocce Doppio Cogoleto 2K26", description: "Risultati e classifiche in tempo reale.", images: ["/og-partite-risultati-ranking.png"] },
+  twitter: { card: "summary_large_image", title: "Torneo di Bocce Singolo Cogoleto 2K26", description: "Risultati e classifiche in tempo reale.", images: ["/og-singolo-2k26.png"] },
 };
 
 export const viewport: Viewport = {
@@ -45,16 +45,16 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const { settings } = await loadPublicTournamentData();
+  const { settings, tournament } = await loadPublicTournamentData();
   return (
     <html lang="it">
       <body className={`${displayFont.variable} ${bodyFont.variable}`}>
         <PwaRegistration />
         <a className="skip-link" href="#contenuto">Vai al contenuto</a>
-        <Header status={settings.tournament_status} />
+        <Header status={settings.tournament_status} tournament={tournament} />
         <main id="contenuto" className="site-main">{children}</main>
         <div className="container live-bar"><RealtimeRefresh lastUpdate={settings.last_public_update} /></div>
-        <Footer />
+        <Footer tournament={tournament} />
       </body>
     </html>
   );

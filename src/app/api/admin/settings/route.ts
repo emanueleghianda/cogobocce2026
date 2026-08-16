@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { apiError, auditAndTouch, requireAdminRequest } from "@/lib/admin";
+import { getActiveTournament } from "@/lib/active-tournament";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { settingsUpdateSchema } from "@/lib/validation";
 
@@ -8,10 +9,12 @@ export async function PUT(request: NextRequest) {
   if (unauthorized) return unauthorized;
   try {
     const input = settingsUpdateSchema.parse(await request.json());
-    const { data, error } = await createServerSupabaseClient()
+    const client = createServerSupabaseClient();
+    const tournament = await getActiveTournament(client);
+    const { data, error } = await client
       .from("tournament_settings")
       .update(input)
-      .eq("id", 1)
+      .eq("tournament_id", tournament.id)
       .select()
       .single();
     if (error) throw new Error("Non è stato possibile aggiornare le impostazioni del torneo.");
@@ -19,7 +22,7 @@ export async function PUT(request: NextRequest) {
       "modifica_stato_comunicazione",
       "tournament_settings",
       "Aggiornati stato e comunicazione pubblica",
-      "1",
+      tournament.id,
     );
     return NextResponse.json({ data });
   } catch (error) {

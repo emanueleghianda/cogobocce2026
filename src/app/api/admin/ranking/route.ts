@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       const resetRows = INITIAL_HISTORICAL_RANKING.map(({ id, ...entry }) => ({ id, ...entry }));
       const { error: insertError } = await client.from("historical_ranking").insert(resetRows);
       if (insertError) throw new Error("Il ripristino del ranking non è stato completato.");
-      await auditAndTouch("ripristino_ranking", "historical_ranking", "Ripristinati i 30 record ufficiali");
+      await auditAndTouch("ripristino_ranking", "historical_ranking", "Ripristinati i 32 record ufficiali");
     }
     return NextResponse.json({ ok: true });
   } catch (error) {

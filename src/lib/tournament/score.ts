@@ -44,7 +44,7 @@ export function validateMatchScore(
   if (!oneWins && !twoWins) {
     return {
       valid: false,
-      message: `${phaseLabel} può essere conclusa solo con una coppia a ${target} punti e l’altra tra 0 e ${target - 1}.`,
+      message: `${phaseLabel} può essere conclusa solo con un partecipante a ${target} punti e l’altro tra 0 e ${target - 1}.`,
     };
   }
   return { valid: true };

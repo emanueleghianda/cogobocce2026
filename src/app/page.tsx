@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BellRing, BookOpen, CalendarDays, Download, ListChecks, Medal, Radio, Trophy } from "lucide-react";
+import { Archive, BellRing, BookOpen, CalendarDays, Download, ListChecks, Medal, Radio, Trophy } from "lucide-react";
 import { PageHero } from "@/components/shared/PageHero";
 import { ShareButton } from "@/components/shared/ShareButton";
 import { MatchCard } from "@/components/tournament/MatchCard";
@@ -24,10 +24,12 @@ export default async function HomePage() {
   return (
     <>
       <PageHero
-        eyebrow="Cogoleto · Estate 2026"
-        title="Torneo di Bocce Doppio Cogoleto 2K26"
+        eyebrow={data.tournament.season_label}
+        title={data.tournament.title}
         description="Tutte le partite e tutti i risultati in tempo reale"
         logo
+        logoSrc={data.tournament.logo_path}
+        logoAlt={`Logo ${data.tournament.title}`}
       >
         <div className="hero-actions">
           <Link className="button button--primary" href="/gironi"><ListChecks size={19} aria-hidden="true" /> Vedi i gironi</Link>
@@ -75,8 +77,8 @@ export default async function HomePage() {
 
       {qualified.length > 0 && (
         <section className="section container">
-          <div className="section-heading"><div><p className="eyebrow">Verso le finali</p><h2>Coppie qualificate</h2></div></div>
-          <div className="grid grid--4">{qualified.map((row) => <div className="panel panel--gold" key={row.team.id}><Trophy color="#F5B800" aria-hidden="true" /><h3>{row.team.name}</h3><p>Girone {row.team.group_code} · {row.rank}ª classificata</p></div>)}</div>
+          <div className="section-heading"><div><p className="eyebrow">Verso le finali</p><h2>Giocatori qualificati</h2></div></div>
+          <div className="grid grid--4">{qualified.map((row) => <div className="panel panel--gold" key={row.team.id}><Trophy color="#F5B800" aria-hidden="true" /><h3>{row.team.name}</h3><p>Girone {row.team.group_code} · {row.rank}° classificato</p></div>)}</div>
         </section>
       )}
 
@@ -99,6 +101,14 @@ export default async function HomePage() {
               <Link className="button button--navy" href="/fase-finale"><Trophy size={18} aria-hidden="true" /> Fase finale</Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="section--tight container">
+        <div className="archive-callout">
+          <Archive size={34} aria-hidden="true" />
+          <div><p className="eyebrow">Archivio tornei</p><h2>Rivivi il Doppio 2K26</h2><p>Tutte le coppie, le partite, i punteggi, i gironi e la fase finale restano consultabili.</p></div>
+          <Link className="button button--primary" href="/archivio/doppio-2k26">Apri Doppio 2K26</Link>
         </div>
       </section>
     </>

@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Torneo Bocce Cogoleto 2K26",
-    short_name: "Bocce 2K26",
-    description: "Tutte le partite, tutti i risultati e il ranking del torneo di Cogoleto.",
+    name: "Torneo Bocce Singolo Cogoleto 2K26",
+    short_name: "Singolo 2K26",
+    description: "Tutte le partite, tutti i risultati e il ranking del torneo singolo di Cogoleto.",
     id: "/",
     start_url: "/",
     scope: "/",
@@ -13,9 +13,9 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: "#071B45",
     lang: "it",
     icons: [
-      { src: "/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
-      { src: "/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
-      { src: "/icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
+      { src: "/icon-singolo-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+      { src: "/icon-singolo-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+      { src: "/icon-singolo-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
     ],
   };
 }

@@ -20,8 +20,26 @@ export type MatchStage = (typeof MATCH_STAGES)[number];
 export type MatchStatus = (typeof MATCH_STATUSES)[number];
 export type BracketSlot = (typeof BRACKET_SLOTS)[number];
 
+export type TournamentFormat = "double" | "single";
+
+export type Tournament = {
+  id: string;
+  slug: string;
+  title: string;
+  short_title: string;
+  format: TournamentFormat;
+  season_label: string;
+  logo_path: string;
+  is_active: boolean;
+  is_archived: boolean;
+  archived_at: string | null;
+  created_at?: string;
+  updated_at?: string;
+};
+
 export type Team = {
   id: string;
+  tournament_id: string;
   name: string;
   player_one: string | null;
   player_two: string | null;
@@ -33,6 +51,7 @@ export type Team = {
 
 export type Match = {
   id: string;
+  tournament_id: string;
   stage: MatchStage;
   group_code: GroupCode | null;
   match_day: number | null;
@@ -61,6 +80,7 @@ export type TournamentStatus =
 
 export type TournamentSettings = {
   id: number;
+  tournament_id: string;
   tournament_status: TournamentStatus;
   public_announcement: string | null;
   group_matches_generated: boolean;
@@ -72,6 +92,7 @@ export type TournamentSettings = {
 
 export type RankingOverride = {
   id?: string;
+  tournament_id: string;
   group_code: GroupCode;
   team_id: string;
   manual_rank: number;
@@ -115,6 +136,7 @@ export type GroupStandings = {
 };
 
 export type PublicTournamentData = {
+  tournament: Tournament;
   teams: Team[];
   matches: Match[];
   settings: TournamentSettings;

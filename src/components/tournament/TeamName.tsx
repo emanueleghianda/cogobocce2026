@@ -6,7 +6,7 @@ export function TeamName({ team, showPlayers = false }: { team: Team | undefined
   return (
     <span className="team-name">
       <strong>{team.name}</strong>
-      {showPlayers && <small>{players || "Giocatori da definire"}</small>}
+      {showPlayers && players && <small>{players}</small>}
     </span>
   );
 }

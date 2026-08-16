@@ -6,7 +6,7 @@ const optionalText = z.string().nullable().optional();
 
 export const teamUpdateSchema = z.object({
   id: z.uuid(),
-  name: z.string().trim().min(1, "Il nome della coppia è obbligatorio."),
+  name: z.string().trim().min(1, "Il nome del partecipante è obbligatorio."),
   player_one: optionalText,
   player_two: optionalText,
   group_code: z.enum(GROUP_CODES),

@@ -108,8 +108,8 @@ export function InstallApp() {
   async function shareInstallLink() {
     setMessage("");
     const data = {
-      title: "Installa Bocce Cogoleto 2K26",
-      text: "Installa sul telefono l'app del Torneo di Bocce Doppio Cogoleto 2K26.",
+      title: "Installa Bocce Singolo Cogoleto 2K26",
+      text: "Installa sul telefono l'app del Torneo di Bocce Singolo Cogoleto 2K26.",
       url: window.location.href,
     };
 
@@ -138,7 +138,7 @@ export function InstallApp() {
       </div>
       <div>
         <p className="eyebrow">Sul tuo telefono</p>
-        <h2>{installed ? "App già installata" : "Installa Bocce Cogoleto 2K26"}</h2>
+        <h2>{installed ? "App già installata" : "Installa Bocce Singolo Cogoleto 2K26"}</h2>
         <p>
           Avrai l&apos;icona del torneo nella schermata Home e potrai aprire il sito come una vera app,
           senza cercare ogni volta il link.
