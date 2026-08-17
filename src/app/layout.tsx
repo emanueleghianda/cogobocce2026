@@ -5,6 +5,7 @@ import { Header } from "@/components/shared/Header";
 import { Footer } from "@/components/shared/Footer";
 import { RealtimeRefresh } from "@/components/shared/RealtimeRefresh";
 import { PwaRegistration } from "@/components/shared/PwaRegistration";
+import { AppLaunchSplash } from "@/components/shared/AppLaunchSplash";
 import { loadPublicTournamentData } from "@/lib/data";
 
 const displayFont = Bebas_Neue({ weight: "400", subsets: ["latin"], variable: "--font-display" });
@@ -18,14 +19,19 @@ export const metadata: Metadata = {
   title: { default: "Torneo di Bocce Singolo Cogoleto 2K26", template: "%s · Bocce Singolo Cogoleto 2K26" },
   description: "Tutte le partite, tutti i risultati, il ranking e la fase finale del Torneo di Bocce Singolo Cogoleto 2K26.",
   applicationName: "Bocce Singolo Cogoleto 2K26",
-  manifest: "/manifest.webmanifest",
+  manifest: "/manifest.webmanifest?v=3",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon-singolo-192.png", type: "image/png", sizes: "192x192" },
-      { url: "/icon-singolo-512.png", type: "image/png", sizes: "512x512" },
+      { url: "/icon-singolo-192.png?v=3", type: "image/png", sizes: "192x192" },
+      { url: "/icon-singolo-512.png?v=3", type: "image/png", sizes: "512x512" },
     ],
-    apple: [{ url: "/apple-touch-icon-singolo.png", type: "image/png", sizes: "180x180" }],
+    apple: [{ url: "/apple-touch-icon-singolo.png?v=3", type: "image/png", sizes: "180x180" }],
+  },
+  appleWebApp: {
+    capable: true,
+    title: "Singolo 2K26",
+    statusBarStyle: "black-translucent",
   },
   openGraph: {
     type: "website",
@@ -49,6 +55,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   return (
     <html lang="it">
       <body className={`${displayFont.variable} ${bodyFont.variable}`}>
+        <AppLaunchSplash />
         <PwaRegistration />
         <a className="skip-link" href="#contenuto">Vai al contenuto</a>
         <Header status={settings.tournament_status} tournament={tournament} />

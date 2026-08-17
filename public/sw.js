@@ -1,5 +1,12 @@
-const CACHE_NAME = "bocce-singolo-cogoleto-2k26-v2";
-const APP_SHELL = ["/", "/installa", "/manifest.webmanifest", "/icon-singolo-192.png", "/icon-singolo-512.png"];
+const CACHE_NAME = "bocce-singolo-cogoleto-2k26-v3";
+const APP_SHELL = [
+  "/",
+  "/installa",
+  "/manifest.webmanifest?v=3",
+  "/icon-singolo-192.png?v=3",
+  "/icon-singolo-512.png?v=3",
+  "/logo-singolo-2k26.png",
+];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));

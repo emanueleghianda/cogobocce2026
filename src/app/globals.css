@@ -217,6 +217,19 @@ table { border-collapse: collapse; width: 100%; }
 .install-steps li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: .7rem; align-items: center; line-height: 1.5; }
 .install-steps svg, .install-step-number { color: var(--blue); }
 .install-step-number { width: 24px; height: 24px; display: grid; place-items: center; border: 2px solid currentColor; border-radius: 50%; font-weight: 900; }
+.app-launch-splash { position: fixed; inset: 0; z-index: 1000; display: none; place-items: center; overflow: hidden; background: radial-gradient(circle at 50% 42%, #123c79 0, var(--navy) 58%, #03102e 100%); color: white; }
+.app-launch-splash::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle, rgba(255, 193, 7, .17) 0 2px, transparent 3px) 0 0 / 28px 28px; opacity: .5; }
+.app-launch-splash__content { position: relative; display: grid; justify-items: center; gap: .8rem; width: min(88vw, 430px); padding: 1.4rem; text-align: center; animation: app-logo-in .55s ease-out both; }
+.app-launch-splash__logo { width: min(78vw, 360px); height: auto; filter: drop-shadow(0 14px 24px rgba(0, 0, 0, .35)); }
+.app-launch-splash__title { margin: 0; color: var(--gold); font-family: var(--font-display), sans-serif; font-size: clamp(2.4rem, 11vw, 4rem); letter-spacing: .045em; line-height: 1; }
+@keyframes app-logo-in {
+  from { opacity: 0; transform: scale(.88); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (display-mode: standalone) {
+  .app-launch-splash { display: grid; }
+}
 .crossing-list { counter-reset: crossing; list-style: none; padding: 0; }
 .crossing-list li { counter-increment: crossing; display: flex; align-items: center; gap: .8rem; padding: .8rem 0; border-bottom: 1px solid var(--line); font-weight: 800; overflow-wrap: anywhere; }
 .crossing-list li::before { content: counter(crossing); flex: 0 0 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; background: var(--gold); color: var(--navy); }
