@@ -19,7 +19,6 @@ export const metadata: Metadata = {
   title: { default: "Torneo di Bocce Singolo Cogoleto 2K26", template: "%s · Bocce Singolo Cogoleto 2K26" },
   description: "Tutte le partite, tutti i risultati, il ranking e la fase finale del Torneo di Bocce Singolo Cogoleto 2K26.",
   applicationName: "Bocce Singolo Cogoleto 2K26",
-  manifest: "/manifest.webmanifest?v=3",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -54,6 +53,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const { settings, tournament } = await loadPublicTournamentData();
   return (
     <html lang="it">
+      <head>
+        <link rel="manifest" href="/manifest.webmanifest?v=3" />
+      </head>
       <body className={`${displayFont.variable} ${bodyFont.variable}`}>
         <AppLaunchSplash />
         <PwaRegistration />
