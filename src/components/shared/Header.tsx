@@ -11,6 +11,8 @@ const navItems = [
   { href: "/regole", label: "Regolamento", icon: ScrollText },
 ] as const;
 
+const mobileNavItems = [navItems[0], navItems[2], navItems[1], navItems[3], navItems[4]];
+
 export function Header() {
   return (
     <>
@@ -34,7 +36,7 @@ export function Header() {
         </div>
       </header>
       <nav className="mobile-nav" aria-label="Navigazione mobile">
-        {navItems.slice(0, 5).map((item) => {
+        {mobileNavItems.map((item) => {
           const Icon = item.icon;
           return (
             <Link href={item.href} key={item.href}>
