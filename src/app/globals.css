@@ -206,6 +206,28 @@ table { border-collapse: collapse; width: 100%; }
 .archive-card > .official-logo { width: 100%; max-height: 280px; }
 .archive-card h2 { margin: 0; color: var(--navy); font-family: var(--font-display), sans-serif; font-size: clamp(2.7rem, 7vw, 4.5rem); line-height: .95; }
 .archive-card p:not(.eyebrow) { color: var(--muted); line-height: 1.6; }
+.waiting-banner { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.25rem; align-items: center; padding: clamp(1.25rem, 4vw, 2.25rem); border: 3px solid var(--gold); border-radius: 1.25rem; background: linear-gradient(135deg, #fff8dc, white); box-shadow: var(--shadow); }
+.waiting-banner > svg { color: var(--red); }
+.waiting-banner h2 { margin: 0; color: var(--navy); font-family: var(--font-display), sans-serif; font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: .95; }
+.waiting-banner p:not(.eyebrow) { margin: .55rem 0 0; color: var(--muted); font-weight: 650; }
+.season-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.season-link { display: flex; gap: 1rem; align-items: center; min-height: 116px; padding: 1.25rem; border: 2px solid var(--gold); border-radius: 1rem; background: white; color: var(--navy); box-shadow: var(--shadow); transition: transform .18s ease, box-shadow .18s ease; }
+.season-link:hover { transform: translateY(-3px); box-shadow: 0 17px 35px rgba(7, 27, 69, .17); }
+.season-link > svg { flex: 0 0 auto; width: 34px; height: 34px; color: var(--red); }
+.season-link strong, .season-link small { display: block; }
+.season-link strong { font-family: var(--font-display), sans-serif; font-size: 1.8rem; letter-spacing: .02em; line-height: 1; }
+.season-link small { margin-top: .35rem; color: var(--muted); font-weight: 700; }
+.honours-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.honour-card { position: relative; overflow: hidden; border: 3px solid var(--gold); border-radius: 1rem; background: white; box-shadow: var(--shadow); }
+.honour-card header { display: flex; align-items: center; justify-content: space-between; padding: .8rem 1rem; background: var(--navy); color: white; }
+.honour-card header span { color: var(--gold); font-family: var(--font-display), sans-serif; font-size: 2.35rem; line-height: 1; }
+.honour-card header strong { text-transform: uppercase; letter-spacing: .09em; }
+.honour-card ol { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.honour-card li { display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: .55rem; align-items: center; min-height: 54px; padding: .65rem 1rem; border-top: 1px solid var(--line); }
+.honour-card li:first-child { background: #fff8dc; }
+.honour-card li span { text-align: center; font-weight: 900; }
+.honour-card li strong { overflow-wrap: anywhere; }
+.honour-card__mark { position: absolute; right: 7.5rem; top: .82rem; color: var(--gold); }
 .install-page { display: grid; gap: 1.5rem; }
 .install-card { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.2rem; align-items: start; padding: clamp(1.2rem, 4vw, 2rem); background: white; border: 3px solid var(--gold); border-radius: 1.2rem; box-shadow: var(--shadow); }
 .install-card__icon { width: 72px; height: 72px; display: grid; place-items: center; border-radius: 1rem; background: var(--navy); color: var(--gold); }
@@ -297,7 +319,7 @@ table { border-collapse: collapse; width: 100%; }
   .hero-actions { justify-content: center; }
   .section { padding: 1.6rem 0; }
   .section-heading { align-items: flex-start; flex-direction: column; }
-  .grid--2, .grid--3, .grid--4, .match-grid, .rules-grid, .podium-cards, .final-ranking { grid-template-columns: 1fr; }
+  .grid--2, .grid--3, .grid--4, .match-grid, .rules-grid, .podium-cards, .final-ranking, .season-links, .honours-grid { grid-template-columns: 1fr; }
   .team-list { grid-template-columns: 1fr; }
   .filter-bar { top: 66px; margin-inline: -.25rem; border-radius: 0; }
   .bracket { display: block; overflow: visible; }
@@ -307,6 +329,8 @@ table { border-collapse: collapse; width: 100%; }
   .form-grid { grid-template-columns: 1fr; }
   .install-card { grid-template-columns: 1fr; }
   .archive-callout, .archive-nav, .archive-card { grid-template-columns: 1fr; }
+  .waiting-banner { grid-template-columns: 1fr; text-align: center; }
+  .waiting-banner > svg { margin-inline: auto; }
   .archive-nav > .official-logo { margin-inline: auto; }
   .archive-nav { text-align: center; }
   .archive-nav__copy .eyebrow, .archive-nav nav { justify-content: center; }

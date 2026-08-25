@@ -35,8 +35,8 @@ export function ShareButton() {
 
   function shareData() {
     return {
-      title: "Torneo di Bocce Singolo Cogoleto 2K26",
-      text: "Tutte le partite, tutti i risultati e tutti i ranking del torneo.",
+      title: "ASPETTANDO IL TORNEO DI BOCCE 2K27",
+      text: "Doppio e Singolo tornano ad agosto 2027. Scopri ranking, albo d’oro e archivi.",
       url: window.location.origin,
     };
   }

@@ -2,8 +2,22 @@ import type { HistoricalRanking, Team, Tournament, TournamentSettings } from "@/
 
 export const SINGLE_TOURNAMENT_ID = "50000000-0000-4000-8000-000000002026";
 export const DOUBLE_TOURNAMENT_ID = "d0000000-0000-4000-8000-000000002026";
+export const WAITING_TOURNAMENT_ID = "27000000-0000-4000-8000-000000002027";
 
 export const INITIAL_TOURNAMENT: Tournament = {
+  id: WAITING_TOURNAMENT_ID,
+  slug: "aspettando-2k27",
+  title: "ASPETTANDO IL TORNEO DI BOCCE 2K27",
+  short_title: "Bocce Cogoleto 2K27",
+  format: "double",
+  season_label: "Prossimo appuntamento · Agosto 2027",
+  logo_path: "/logo-attesa-2k27.png",
+  is_active: true,
+  is_archived: false,
+  archived_at: null,
+};
+
+export const ARCHIVED_SINGLE_TOURNAMENT: Tournament = {
   id: SINGLE_TOURNAMENT_ID,
   slug: "singolo-2k26",
   title: "Torneo di Bocce Singolo Cogoleto 2K26",
@@ -11,8 +25,8 @@ export const INITIAL_TOURNAMENT: Tournament = {
   format: "single",
   season_label: "Cogoleto · Estate 2026",
   logo_path: "/logo-singolo-2k26.png",
-  is_active: true,
-  is_archived: false,
+  is_active: false,
+  is_archived: true,
   archived_at: null,
 };
 
@@ -29,13 +43,13 @@ export const ARCHIVED_DOUBLE_TOURNAMENT: Tournament = {
   archived_at: null,
 };
 
-const officialRankingRows: Array<[number, string, number]> = [
-  [1, "Cesare Ghianda", 48],
-  [2, "Matteo Binda", 46],
-  [3, "Emanuele Ghianda", 44],
+const globalRankingRows: Array<[number, string, number]> = [
+  [1, "Cesare Ghianda", 58],
+  [2, "Emanuele Ghianda", 50],
+  [3, "Matteo Binda", 46],
   [4, "Luigi Ghianda", 40],
   [5, "Enzo Carena", 32],
-  [6, "Marco Cantamessa", 22],
+  [6, "Marco Cantamessa", 26],
   [7, "Teresa Cantamessa", 20],
   [8, "Piera Ciccarelli", 16],
   [8, "Cristina", 16],
@@ -58,16 +72,39 @@ const officialRankingRows: Array<[number, string, number]> = [
   [25, "Susanna Grimaldi", 4],
   [25, "Luca Pulice", 4],
   [25, "Enzo Grimaldi", 4],
+  [29, "Paolo Riva", 2],
   [29, "Edoardo Capurro", 2],
   [29, "Francesco Novarini", 2],
   [29, "Davide Novarini", 2],
   [29, "Elena Poretta", 2],
 ];
 
-export const INITIAL_HISTORICAL_RANKING: HistoricalRanking[] = officialRankingRows.map(
+const triennialRankingRows: Array<[number, string, number]> = [
+  [1, "Emanuele Ghianda", 28],
+  [2, "Cesare Ghianda", 24],
+  [2, "Luigi Ghianda", 24],
+  [4, "Marco Cantamessa", 16],
+  [5, "Matteo Binda", 14],
+  [5, "Ilaria Bocelli", 14],
+  [7, "Stefano Giannelli", 12],
+  [8, "Teresa Cantamessa", 10],
+  [8, "Simone Imberti", 10],
+  [10, "Marcello Sala", 6],
+  [10, "Pierpaolo Scoccimarro", 6],
+  [10, "Luisa Cantamessa", 6],
+  [13, "Stefano Cracco", 4],
+  [13, "Mary Gemme", 4],
+  [15, "Paolo Riva", 2],
+  [15, "Edoardo Capurro", 2],
+  [15, "Alessio Accetta", 2],
+  [15, "Elena Poretta", 2],
+];
+
+export const INITIAL_GLOBAL_RANKING: HistoricalRanking[] = globalRankingRows.map(
   ([rank_position, participant_name, points], index) => ({
-    id: `10000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`,
+    id: `11000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`,
     ranking_period: "2020-2026",
+    ranking_type: "global",
     rank_position,
     participant_name,
     points,
@@ -75,6 +112,24 @@ export const INITIAL_HISTORICAL_RANKING: HistoricalRanking[] = officialRankingRo
   }),
 );
 
+export const INITIAL_TRIENNIAL_RANKING: HistoricalRanking[] = triennialRankingRows.map(
+  ([rank_position, participant_name, points], index) => ({
+    id: `12000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`,
+    ranking_period: "2024-2026",
+    ranking_type: "triennial",
+    rank_position,
+    participant_name,
+    points,
+    display_order: index + 1,
+  }),
+);
+
+export const INITIAL_HISTORICAL_RANKING: HistoricalRanking[] = [
+  ...INITIAL_GLOBAL_RANKING,
+  ...INITIAL_TRIENNIAL_RANKING,
+];
+
+// Partecipanti di esempio usati anche dai test del tabellone.
 export const INITIAL_TEAMS: Team[] = Array.from({ length: 16 }, (_, index) => ({
   id: `20000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`,
   tournament_id: SINGLE_TOURNAMENT_ID,
@@ -86,11 +141,11 @@ export const INITIAL_TEAMS: Team[] = Array.from({ length: 16 }, (_, index) => ({
 }));
 
 export const INITIAL_SETTINGS: TournamentSettings = {
-  id: 2,
-  tournament_id: SINGLE_TOURNAMENT_ID,
-  tournament_status: "registrations",
+  id: 3,
+  tournament_id: WAITING_TOURNAMENT_ID,
+  tournament_status: "suspended",
   public_announcement:
-    "I partecipanti e la composizione dei gironi saranno aggiornati dall’organizzazione.",
+    "Il Doppio e il Singolo torneranno ad agosto 2027.",
   group_matches_generated: false,
   finals_generated: false,
   last_public_update: null,

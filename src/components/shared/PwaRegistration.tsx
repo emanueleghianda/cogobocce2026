@@ -28,7 +28,7 @@ export function PwaRegistration() {
     }
 
     const register = () => {
-      navigator.serviceWorker.register("/sw.js?v=3", { updateViaCache: "none" }).then((registration) => {
+      navigator.serviceWorker.register("/sw.js?v=4", { updateViaCache: "none" }).then((registration) => {
         void registration.update();
       }).catch(() => {
         // Il sito continua a funzionare normalmente anche se la registrazione non riesce.

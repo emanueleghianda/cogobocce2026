@@ -5,7 +5,7 @@ import { PageHero } from "@/components/shared/PageHero";
 
 export const metadata: Metadata = {
   title: "Installa l'app",
-  description: "Installa sul telefono l'app del Torneo di Bocce Singolo Cogoleto 2K26.",
+  description: "Installa sul telefono l'app dei Tornei di Bocce di Cogoleto.",
 };
 
 export default function InstallPage() {
@@ -14,7 +14,7 @@ export default function InstallPage() {
       <PageHero
         eyebrow="Sempre a portata di mano"
         title="Installa l'app del torneo"
-        description="Aggiungi Bocce Singolo Cogoleto 2K26 alla schermata Home del telefono. È gratuita e non richiede App Store o Google Play."
+        description="Aggiungi Bocce Cogoleto alla schermata Home del telefono. È gratuita e non richiede App Store o Google Play."
       />
 
       <section className="section container install-page">

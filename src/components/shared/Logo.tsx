@@ -13,15 +13,16 @@ type LogoProps = {
 export function Logo({
   className = "",
   compact = false,
-  src = "/logo-singolo-2k26.png",
-  alt = "Logo Torneo di Bocce Singolo Cogoleto 2K26",
+  src = "/logo-attesa-2k27.png",
+  alt = "Logo Torneo di Bocce Cogoleto",
 }: LogoProps) {
   const [failed, setFailed] = useState(false);
-  const edition = alt.toLocaleLowerCase("it").includes("doppio") ? "DOPPIO" : "SINGOLO";
+  const lowerAlt = alt.toLocaleLowerCase("it");
+  const edition = lowerAlt.includes("doppio") ? "DOPPIO" : lowerAlt.includes("singolo") ? "SINGOLO" : "COGOLETO";
   if (failed) {
     return (
       <div className={`logo-fallback ${compact ? "logo-fallback--compact" : ""} ${className}`} role="img" aria-label={alt}>
-        <span><strong>BOCCE</strong><small>{edition} · COGOLETO 2K26</small></span>
+        <span><strong>BOCCE</strong><small>{edition} · 2K27</small></span>
       </div>
     );
   }

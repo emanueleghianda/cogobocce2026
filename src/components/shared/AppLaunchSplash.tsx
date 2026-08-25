@@ -18,13 +18,13 @@ export function AppLaunchSplash() {
       <div className="app-launch-splash__content">
         <Image
           className="app-launch-splash__logo"
-          src="/logo-singolo-2k26.png"
+          src="/logo-attesa-2k27.png"
           alt=""
           width={1254}
           height={1254}
           priority
         />
-        <p className="app-launch-splash__title">Singolo 2K26</p>
+        <p className="app-launch-splash__title">Bocce Cogoleto · 2K27</p>
       </div>
     </div>
   );

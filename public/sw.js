@@ -1,11 +1,9 @@
-const CACHE_NAME = "bocce-singolo-cogoleto-2k26-v3";
+const CACHE_NAME = "bocce-cogoleto-2k27-v4";
 const APP_SHELL = [
   "/",
   "/installa",
-  "/manifest.webmanifest?v=3",
-  "/icon-singolo-192.png?v=3",
-  "/icon-singolo-512.png?v=3",
-  "/logo-singolo-2k26.png",
+  "/manifest.webmanifest?v=4",
+  "/logo-attesa-2k27.png?v=4",
 ];
 
 self.addEventListener("install", (event) => {

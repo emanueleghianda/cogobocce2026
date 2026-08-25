@@ -3,7 +3,7 @@ import { LoginForm } from "@/components/admin/LoginForm";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
 import { hasAdminSession } from "@/lib/auth";
 import { getActiveTournament } from "@/lib/active-tournament";
-import { INITIAL_HISTORICAL_RANKING, INITIAL_SETTINGS, INITIAL_TEAMS, INITIAL_TOURNAMENT } from "@/lib/constants";
+import { INITIAL_HISTORICAL_RANKING, INITIAL_SETTINGS, INITIAL_TOURNAMENT } from "@/lib/constants";
 import { createServerSupabaseClient, isServerSupabaseConfigured } from "@/lib/supabase/server";
 import type { HistoricalRanking, Match, RankingOverride, Team, Tournament, TournamentSettings } from "@/types/tournament";
 
@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: "Area amministratore", robots: { inde
 
 export default async function AdminPage() {
   if (!(await hasAdminSession())) return <LoginForm />;
-  let teams: Team[] = INITIAL_TEAMS;
+  let teams: Team[] = [];
   let matches: Match[] = [];
   let ranking: HistoricalRanking[] = INITIAL_HISTORICAL_RANKING;
   let settings: TournamentSettings = INITIAL_SETTINGS;

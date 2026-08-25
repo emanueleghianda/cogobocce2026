@@ -1,30 +1,27 @@
 import Link from "next/link";
-import { Archive, Home, ListChecks, Trophy, CalendarDays, Medal, ScrollText, LockKeyhole } from "lucide-react";
+import { Archive, Crown, Home, Medal, ScrollText, LockKeyhole, Trophy } from "lucide-react";
 import { Logo } from "@/components/shared/Logo";
-import { TOURNAMENT_STATUS_LABELS } from "@/lib/constants";
-import type { Tournament, TournamentStatus } from "@/types/tournament";
 
 const navItems = [
   { href: "/", label: "Home", icon: Home },
-  { href: "/gironi", label: "Gironi", icon: ListChecks },
-  { href: "/partite", label: "Partite", icon: CalendarDays },
-  { href: "/fase-finale", label: "Fase finale", icon: Trophy },
-  { href: "/ranking", label: "Ranking", icon: Medal },
-  { href: "/regole", label: "Regole", icon: ScrollText },
+  { href: "/ranking", label: "Ranking Globale", icon: Medal },
+  { href: "/ranking-triennale", label: "Ranking Triennale", icon: Trophy },
+  { href: "/albo-d-oro", label: "Albo d'oro", icon: Crown },
   { href: "/archivio", label: "Archivio", icon: Archive },
+  { href: "/regole", label: "Regolamento", icon: ScrollText },
 ] as const;
 
-export function Header({ status, tournament }: { status: TournamentStatus; tournament: Tournament }) {
+export function Header() {
   return (
     <>
       <header className="site-header">
         <div className="site-header__inner">
           <Link href="/" className="brand-link" aria-label="Torna alla home del torneo">
-            <Logo compact src={tournament.logo_path} alt={`Logo ${tournament.title}`} />
+            <Logo compact src="/logo-attesa-2k27.png" alt="Logo Torneo di Bocce Cogoleto" />
           </Link>
           <div className="status-ribbon">
             <span className="status-dot" aria-hidden="true" />
-            {TOURNAMENT_STATUS_LABELS[status]}
+            Agosto 2027
           </div>
           <nav className="desktop-nav" aria-label="Navigazione principale">
             {navItems.map((item) => (

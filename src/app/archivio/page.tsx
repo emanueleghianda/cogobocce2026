@@ -24,7 +24,7 @@ export default async function ArchivePage() {
               <div>
                 <p className="eyebrow"><Archive size={15} aria-hidden="true" /> Torneo concluso</p>
                 <h2>{tournament.short_title}</h2>
-                <p>Coppie, gironi, tutte le partite, tutti i risultati e il podio finale.</p>
+                <p>{tournament.format === "double" ? "Coppie" : "Giocatori"}, gironi, tutte le partite, tutti i risultati e il podio finale.</p>
                 <Link className="button button--navy" href={`/archivio/${tournament.slug}`}>
                   Apri l&apos;archivio <ArrowRight size={18} aria-hidden="true" />
                 </Link>

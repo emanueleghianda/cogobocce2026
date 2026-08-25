@@ -2,9 +2,10 @@ import "server-only";
 import { cache } from "react";
 import {
   ARCHIVED_DOUBLE_TOURNAMENT,
+  ARCHIVED_SINGLE_TOURNAMENT,
   INITIAL_HISTORICAL_RANKING,
+  INITIAL_TRIENNIAL_RANKING,
   INITIAL_SETTINGS,
-  INITIAL_TEAMS,
   INITIAL_TOURNAMENT,
 } from "@/lib/constants";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
@@ -22,15 +23,29 @@ import type {
   TournamentSettings,
 } from "@/types/tournament";
 
+function fallbackTournamentForSlug(slug?: string): Tournament {
+  if (slug === ARCHIVED_DOUBLE_TOURNAMENT.slug) return ARCHIVED_DOUBLE_TOURNAMENT;
+  if (slug === ARCHIVED_SINGLE_TOURNAMENT.slug) return ARCHIVED_SINGLE_TOURNAMENT;
+  return INITIAL_TOURNAMENT;
+}
+
+function normalizeRankings(rows: HistoricalRanking[]): HistoricalRanking[] {
+  if (rows.some((entry) => entry.ranking_type === "triennial")) return rows;
+  return [
+    ...rows.map((entry) => ({ ...entry, ranking_type: "global" as const })),
+    ...INITIAL_TRIENNIAL_RANKING,
+  ];
+}
+
 async function loadTournamentData(slug?: string): Promise<PublicTournamentData> {
   const client = isServerSupabaseConfigured()
     ? createServerSupabaseClient()
     : createPublicSupabaseClient();
-  const fallbackTournament = slug === "doppio-2k26" ? ARCHIVED_DOUBLE_TOURNAMENT : INITIAL_TOURNAMENT;
+  const fallbackTournament = fallbackTournamentForSlug(slug);
   if (!client) {
     return {
       tournament: fallbackTournament,
-      teams: slug ? [] : INITIAL_TEAMS,
+      teams: [],
       matches: [],
       settings: INITIAL_SETTINGS,
       historicalRanking: INITIAL_HISTORICAL_RANKING,
@@ -71,14 +86,14 @@ async function loadTournamentData(slug?: string): Promise<PublicTournamentData> 
       teams: (teamsResult.data ?? []) as Team[],
       matches: (matchesResult.data ?? []) as Match[],
       settings: settingsResult.data as TournamentSettings,
-      historicalRanking: (rankingResult.data ?? []) as HistoricalRanking[],
+      historicalRanking: normalizeRankings((rankingResult.data ?? []) as HistoricalRanking[]),
       overrides: (overridesResult.data ?? []) as RankingOverride[],
       connected: true,
     };
   } catch {
     return {
       tournament: fallbackTournament,
-      teams: slug ? [] : INITIAL_TEAMS,
+      teams: [],
       matches: [],
       settings: INITIAL_SETTINGS,
       historicalRanking: INITIAL_HISTORICAL_RANKING,
@@ -100,11 +115,12 @@ export const loadArchivedTournaments = cache(async (): Promise<Tournament[]> => 
   const client = isServerSupabaseConfigured()
     ? createServerSupabaseClient()
     : createPublicSupabaseClient();
-  if (!client) return [ARCHIVED_DOUBLE_TOURNAMENT];
+  const fallback = [ARCHIVED_SINGLE_TOURNAMENT, ARCHIVED_DOUBLE_TOURNAMENT];
+  if (!client) return fallback;
   const { data, error } = await client
     .from("tournaments")
     .select("*")
     .eq("is_archived", true)
     .order("archived_at", { ascending: false, nullsFirst: false });
-  return error ? [ARCHIVED_DOUBLE_TOURNAMENT] : (data as Tournament[]);
+  return error ? fallback : (data as Tournament[]);
 });

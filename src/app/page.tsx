@@ -1,114 +1,94 @@
 import Link from "next/link";
-import { Archive, BellRing, BookOpen, CalendarDays, Download, ListChecks, Medal, Radio, Trophy } from "lucide-react";
+import { Archive, CalendarDays, Crown, Download, History, Medal, Trophy } from "lucide-react";
 import { PageHero } from "@/components/shared/PageHero";
 import { ShareButton } from "@/components/shared/ShareButton";
-import { MatchCard } from "@/components/tournament/MatchCard";
-import { TOURNAMENT_STATUS_LABELS } from "@/lib/constants";
 import { loadPublicTournamentData } from "@/lib/data";
-import { calculateAllStandings, getExpectedGroupMatchCount } from "@/lib/tournament/groups";
+import { selectRanking } from "@/lib/ranking";
 
 export const dynamic = "force-dynamic";
 
+function RankingPodium({ title, entries, href }: { title: string; entries: ReturnType<typeof selectRanking>; href: string }) {
+  return (
+    <article className="panel panel--navy podium-panel">
+      <p className="eyebrow">Classifica ufficiale</p>
+      <h2>{title}</h2>
+      <div className="podium-cards">
+        {entries.slice(0, 3).map((entry, index) => (
+          <div className="podium-card" key={entry.id}>
+            <span aria-hidden="true">{["🥇", "🥈", "🥉"][index]}</span>
+            <strong>{entry.participant_name}</strong>
+            <b>{entry.points} pt</b>
+          </div>
+        ))}
+      </div>
+      <Link className="button button--primary" href={href}>Consulta la classifica</Link>
+    </article>
+  );
+}
+
 export default async function HomePage() {
   const data = await loadPublicTournamentData();
-  const standings = calculateAllStandings(data.teams, data.matches, data.overrides);
-  const live = data.matches.filter((match) => match.status === "live");
-  const completed = data.matches.filter((match) => match.status === "completed").slice(-3).reverse();
-  const upcoming = data.matches
-    .filter((match) => match.status === "scheduled")
-    .sort((a, b) => (a.scheduled_at ?? "9999").localeCompare(b.scheduled_at ?? "9999"))
-    .slice(0, 3);
-  const qualified = standings.flatMap((group) => group.rows.filter((row) => row.qualified));
-  const expectedMatches = getExpectedGroupMatchCount(data.teams) + 8;
+  const globalRanking = selectRanking(data.historicalRanking, "global");
+  const triennialRanking = selectRanking(data.historicalRanking, "triennial");
 
   return (
     <>
       <PageHero
-        eyebrow={data.tournament.season_label}
-        title={data.tournament.title}
-        description="Tutte le partite e tutti i risultati in tempo reale"
+        eyebrow="Cogoleto · Prossimo appuntamento: agosto 2027"
+        title="ASPETTANDO IL TORNEO DI BOCCE 2K27"
+        description="Doppio e Singolo torneranno ad agosto 2027. Nell’attesa, rivivi i tornei conclusi e consulta ranking e albo d’oro."
         logo
-        logoSrc={data.tournament.logo_path}
-        logoAlt={`Logo ${data.tournament.title}`}
+        logoSrc="/logo-attesa-2k27.png"
+        logoAlt="Logo Torneo di Bocce Cogoleto"
       >
         <div className="hero-actions">
-          <Link className="button button--primary" href="/gironi"><ListChecks size={19} aria-hidden="true" /> Vedi i gironi</Link>
-          <Link className="button button--outline" href="/partite?stato=live"><Radio size={19} aria-hidden="true" /> PARTITA IN CORSO</Link>
-          <Link className="button button--outline" href="/ranking"><Medal size={19} aria-hidden="true" /> Ranking</Link>
+          <Link className="button button--primary" href="/ranking"><Medal size={19} aria-hidden="true" /> Ranking Globale</Link>
+          <Link className="button button--outline" href="/ranking-triennale"><Trophy size={19} aria-hidden="true" /> Ranking Triennale</Link>
+          <Link className="button button--outline" href="/albo-d-oro"><Crown size={19} aria-hidden="true" /> Albo d&apos;oro</Link>
           <Link className="button button--outline" href="/installa"><Download size={19} aria-hidden="true" /> Installa l&apos;app</Link>
           <ShareButton />
         </div>
-        {!data.connected && (
-          <p className="connection-notice" role="status">I dati iniziali ufficiali sono pronti; gli aggiornamenti live saranno visibili alla pubblicazione del torneo.</p>
-        )}
       </PageHero>
 
-      <section className="section container">
-        <div className="grid grid--2">
-          <div className="metric"><strong>{TOURNAMENT_STATUS_LABELS[data.settings.tournament_status]}</strong><span>Stato del torneo</span></div>
-          <div className="metric"><strong>{data.matches.filter((m) => m.status === "completed").length}/{expectedMatches}</strong><span>Partite concluse</span></div>
-        </div>
-      </section>
-
-      <section className="section--tight container">
-        <div className="announcement">
-          <BellRing size={23} aria-hidden="true" />
-          <div><strong>Comunicazione dell’organizzazione</strong><p>{data.settings.public_announcement || "Nessuna comunicazione pubblicata."}</p></div>
+      <section className="section container waiting-banner">
+        <CalendarDays size={42} aria-hidden="true" />
+        <div>
+          <p className="eyebrow">Segna il periodo</p>
+          <h2>Ci vediamo ad agosto 2027</h2>
+          <p>Due tornei, la stessa tradizione: torneranno sia il Doppio sia il Singolo.</p>
         </div>
       </section>
 
       <section className="section container">
-        <div className="section-heading"><div><p className="eyebrow">Sul campo</p><h2>PARTITA IN CORSO</h2></div><Link className="button button--outline" href="/partite">Tutte le partite</Link></div>
-        {live.length ? <div className="match-grid">{live.map((match) => <MatchCard key={match.id} match={match} teams={data.teams} />)}</div> : <div className="empty-state">Nessuna partita è in corso in questo momento.</div>}
-      </section>
-
-      <section className="section container">
-        <div className="grid grid--2">
-          <div>
-            <div className="section-heading"><div><p className="eyebrow">Appena concluse</p><h2>Ultimi risultati</h2></div></div>
-            {completed.length ? <div className="grid">{completed.map((match) => <MatchCard key={match.id} match={match} teams={data.teams} />)}</div> : <div className="empty-state">I risultati compariranno qui appena disponibili.</div>}
-          </div>
-          <div>
-            <div className="section-heading"><div><p className="eyebrow">In calendario</p><h2>Prossime partite</h2></div></div>
-            {upcoming.length ? <div className="grid">{upcoming.map((match) => <MatchCard key={match.id} match={match} teams={data.teams} />)}</div> : <div className="empty-state">Il calendario sarà pubblicato dall’organizzazione.</div>}
-          </div>
+        <div className="section-heading">
+          <div><p className="eyebrow">La storia continua</p><h2>Nel frattempo, scopri tutti i risultati</h2></div>
+        </div>
+        <div className="season-links">
+          <Link className="season-link" href="/ranking"><Medal aria-hidden="true" /><span><strong>Ranking Globale</strong><small>Tutti i tornei dal 2020</small></span></Link>
+          <Link className="season-link" href="/ranking-triennale"><Trophy aria-hidden="true" /><span><strong>Ranking Triennale</strong><small>Gli ultimi tre anni di tornei</small></span></Link>
+          <Link className="season-link" href="/albo-d-oro"><History aria-hidden="true" /><span><strong>Albo d&apos;oro</strong><small>Tutti i podi dal 2020</small></span></Link>
         </div>
       </section>
 
-      {qualified.length > 0 && (
-        <section className="section container">
-          <div className="section-heading"><div><p className="eyebrow">Verso le finali</p><h2>Giocatori qualificati</h2></div></div>
-          <div className="grid grid--4">{qualified.map((row) => <div className="panel panel--gold" key={row.team.id}><Trophy color="#F5B800" aria-hidden="true" /><h3>{row.team.name}</h3><p>Girone {row.team.group_code} · {row.rank}° classificato</p></div>)}</div>
-        </section>
-      )}
-
       <section className="section container">
         <div className="grid grid--2">
-          <div className="panel panel--navy podium-panel">
-            <p className="eyebrow">RANKING ANNI &apos;20</p><h2>Il podio del ranking</h2>
-            <div className="podium-cards">
-              {data.historicalRanking.slice(0, 3).map((entry, index) => <div className="podium-card" key={entry.id}><span>{["🥇", "🥈", "🥉"][index]} {entry.rank_position}° posto</span><strong>{entry.participant_name}</strong><b>{entry.points} pt</b></div>)}
-            </div>
-            <Link className="button button--primary" href="/ranking">Consulta il ranking completo</Link>
-          </div>
-          <div className="panel panel--cream">
-            <p className="eyebrow">SCOPRI IL TORNEO</p><h2>Il torneo, partita dopo partita</h2>
-            <p>Consulta il regolamento, il calendario, i gironi e il tabellone della fase finale.</p>
-            <div className="button-row">
-              <Link className="button button--outline" href="/regole"><BookOpen size={18} aria-hidden="true" /> Leggi le regole</Link>
-              <Link className="button button--outline" href="/partite"><CalendarDays size={18} aria-hidden="true" /> Partite</Link>
-              <Link className="button button--outline" href="/gironi"><ListChecks size={18} aria-hidden="true" /> Gironi</Link>
-              <Link className="button button--navy" href="/fase-finale"><Trophy size={18} aria-hidden="true" /> Fase finale</Link>
-            </div>
-          </div>
+          <RankingPodium title="Ranking Globale" entries={globalRanking} href="/ranking" />
+          <RankingPodium title="Ranking Triennale" entries={triennialRanking} href="/ranking-triennale" />
         </div>
       </section>
 
       <section className="section--tight container">
         <div className="archive-callout">
           <Archive size={34} aria-hidden="true" />
-          <div><p className="eyebrow">Archivio tornei</p><h2>Rivivi il Doppio 2K26</h2><p>Tutte le coppie, le partite, i punteggi, i gironi e la fase finale restano consultabili.</p></div>
-          <Link className="button button--primary" href="/archivio/doppio-2k26">Apri Doppio 2K26</Link>
+          <div>
+            <p className="eyebrow">Archivio 2K26</p>
+            <h2>Rivivi Doppio e Singolo</h2>
+            <p>Partecipanti, gironi, classifiche, tutte le partite, tutti i punteggi e le fasi finali sono conservati integralmente.</p>
+          </div>
+          <div className="button-row">
+            <Link className="button button--primary" href="/archivio/doppio-2k26">Doppio 2K26</Link>
+            <Link className="button button--primary" href="/archivio/singolo-2k26">Singolo 2K26</Link>
+          </div>
         </div>
       </section>
     </>

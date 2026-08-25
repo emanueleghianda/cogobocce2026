@@ -104,6 +104,7 @@ export type RankingOverride = {
 export type HistoricalRanking = {
   id: string;
   ranking_period: string;
+  ranking_type?: "global" | "triennial";
   rank_position: number;
   participant_name: string;
   points: number;

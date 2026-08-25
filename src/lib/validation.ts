@@ -40,6 +40,7 @@ export const settingsUpdateSchema = z.object({
 export const rankingEntrySchema = z.object({
   id: z.uuid().optional(),
   ranking_period: z.string().trim().min(1),
+  ranking_type: z.enum(["global", "triennial"]).default("global"),
   rank_position: z.number().int().positive(),
   participant_name: z.string().trim().min(1, "Il nome del partecipante è obbligatorio."),
   points: z.number().int().min(0),
